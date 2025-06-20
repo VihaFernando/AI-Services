@@ -2,13 +2,13 @@
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "target": "ES6",
+    "target": "es5", // Changed from ES6 to es5 for broader compatibility
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // Changed from bundler to node for Next.js compatibility
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
