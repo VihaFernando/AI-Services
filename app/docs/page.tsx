@@ -354,7 +354,7 @@ ${inputText}`
                   >
                     <ReactMarkdown
                       components={{
-                        code({ node, inline, className, children, ...props }) {
+                        code({ inline, className, children, ...props }) {
                           const match = /language-(\w+)/.exec(className || "")
                           return !inline && match ? (
                             <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div" {...props}>
@@ -368,7 +368,7 @@ ${inputText}`
                         },
                         p: ({ children }) => <p className="mb-3">{children}</p>,
                         ul: ({ children }) => <ul className="list-disc list-inside mb-3 space-y-1">{children}</ul>,
-                        ol: ({ children }) => <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ol>,
                         li: ({ children }) => <li className="ml-2">{children}</li>,
                         strong: ({ children }) => <strong className="font-bold">{children}</strong>,
                         em: ({ children }) => <em className="italic">{children}</em>,
@@ -414,7 +414,7 @@ ${inputText}`
                   >
                     <ReactMarkdown
                       components={{
-                        code({ node, inline, className, children, ...props }) {
+                        code({ inline, className, children, ...props }) {
                           const match = /language-(\w+)/.exec(className || "")
                           return !inline && match ? (
                             <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div" {...props}>
@@ -428,7 +428,7 @@ ${inputText}`
                         },
                         p: ({ children }) => <p className="mb-3">{children}</p>,
                         ul: ({ children }) => <ul className="list-disc list-inside mb-3 space-y-1">{children}</ul>,
-                        ol: ({ children }) => <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ol>,
                         li: ({ children }) => <li className="ml-2">{children}</li>,
                         strong: ({ children }) => <strong className="font-bold">{children}</strong>,
                         em: ({ children }) => <em className="italic">{children}</em>,
