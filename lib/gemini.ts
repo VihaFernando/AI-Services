@@ -1,6 +1,3 @@
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
-
 export interface GeminiMessage {
   role: "user" | "model"
   parts: Array<{
@@ -12,54 +9,32 @@ export interface GeminiMessage {
   }>
 }
 
-export interface GeminiResponse {
-  candidates: Array<{
-    content: {
-      parts: Array<{
-        text: string
-      }>
-      role: string
-    }
-    finishReason: string
-    index: number
-  }>
-}
-
+/**
+ * Client-side helper.
+ * Always calls our own /api/gemini route (API key stays on the server).
+ */
 export async function callGemini(messages: GeminiMessage[]): Promise<string> {
   try {
-    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+    const res = await fetch("/api/gemini", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        contents: messages,
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 2048,
-        },
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages }),
     })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (!res.ok) {
+      const { error } = await res.json().catch(() => ({ error: "Unknown error" }))
+      throw new Error(error ?? `HTTP ${res.status}`)
     }
 
-    const data: GeminiResponse = await response.json()
-
-    if (!data.candidates || data.candidates.length === 0) {
-      throw new Error("No response from Gemini")
-    }
-
-    return data.candidates[0].content.parts[0].text
+    const { text } = (await res.json()) as { text: string }
+    return text
   } catch (error) {
     console.error("Gemini API error:", error)
-    throw new Error("Failed to get response from AI. Please check your connection and try again.")
+    throw error instanceof Error ? error : new Error("Gemini request failed.")
   }
 }
 
+/* ---------- utility unchanged ---------- */
 export function imageToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
